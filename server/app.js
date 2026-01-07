@@ -6,7 +6,6 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Connexion MongoDB Atlas
 mongoose

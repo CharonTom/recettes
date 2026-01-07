@@ -2,9 +2,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
-/**
- * Register
- */
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -27,10 +24,6 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
-/**
- * Login
- */
 
 exports.login = async (req, res) => {
   try {

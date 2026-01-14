@@ -10,12 +10,13 @@ const AppRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<MainLayout />}>
       {/* publiques */}
+      <Route index element={<Login />} />
       <Route path="login" element={<Login />} />
       {/* <Route path="register" element={<Register />} /> */}
 
       {/* protégées  */}
       <Route element={<PrivateRoute />}>
-        <Route index element={<Home />} />
+        <Route path="home" element={<Home />} />
         {/* <Route path="account" element={<Account />} />
         <Route path="setting" element={<Setting />} /> */}
       </Route>

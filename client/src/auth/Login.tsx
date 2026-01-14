@@ -5,7 +5,6 @@ import axios from "axios";
 import { CiUser } from "react-icons/ci";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
-import { TbChevronLeft } from "react-icons/tb";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -20,12 +19,12 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post<{ access_token: string }>(
-        `${BASE_URL}/auth/login`,
+      const response = await axios.post<{ token: string }>(
+        `${BASE_URL}/api/auth/login`,
         { email, password }
       );
-      setToken(response.data.access_token);
-      navigate("/account", { replace: true });
+      setToken(response.data.token);
+      navigate("/home", { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || "Erreur de connexion");
@@ -33,22 +32,22 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex-center relative">
-      <div className="mx-auto w-[85%] max-w-2xl">
-        <div
-          onClick={() => navigate("/connection-gate")}
-          className="flex-center absolute top-16 left-12 bg-white h-12 w-12 rounded-xl"
-        >
-          <TbChevronLeft className="text-3xl text-primary" />
-        </div>
+    <section className="login-page relative">
+      <div className="login-card">
+        <header className="mb-8 space-y-2 text-center">
+          <h1 className="login-title">Connectez-vous à votre compte</h1>
+          <p className="login-subtitle">
+            Accédez à vos recettes de famille en toute sécurité.
+          </p>
+        </header>
 
-        <h1 className="text-[32px] font-bold">Connectez vous à votre compte</h1>
-        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md space-y-4">
-            {/* Email input element*/}
-            <div className="flex-center bg-white p-1 rounded">
-              <CiUser className="m-2 text-2xl" />
+        {error && <p className="login-error">{error}</p>}
+
+        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            {/* Email */}
+            <div className="login-field">
+              <CiUser className="text-2xl text-slate-400" />
               <input
                 id="email"
                 name="email"
@@ -57,14 +56,14 @@ const Login: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2"
-                placeholder="Email"
+                className="login-input"
+                placeholder="Votre adresse e-mail"
               />
             </div>
 
-            {/* password input */}
-            <div className="flex-center bg-white p-1 rounded">
-              <CiLock className="m-2 text-2xl" />
+            {/* Mot de passe */}
+            <div className="login-field">
+              <CiLock className="text-2xl text-slate-400" />
               <input
                 id="password"
                 name="password"
@@ -73,27 +72,27 @@ const Login: React.FC = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2"
-                placeholder="Mot de passe"
+                className="login-input"
+                placeholder="Votre mot de passe"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="m-2 text-2xl focus:outline-none"
+                className="text-xl text-slate-400 hover:text-slate-200 transition-colors"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
           </div>
-          <div>
-            <button type="submit" className="btn-primary w-full">
-              Se connecter
-            </button>
-          </div>
+
+          <button type="submit" className="btn-primary w-full mt-2">
+            Se connecter
+          </button>
         </form>
-        <p className="mt-12 text-xs text-gray-500">
+
+        <p className="login-footer">
           Pas encore inscrit ?{" "}
-          <Link to="/register" className="text-primary underline">
+          <Link to="/register" className="underline hover:text-blue-300">
             Inscrivez-vous ici
           </Link>
         </p>

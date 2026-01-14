@@ -8,7 +8,7 @@ const Logout: React.FC = () => {
 
   useEffect(() => {
     setToken(null);
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   }, [setToken, navigate]);
 
   return <p>Déconnexion en cours…</p>;

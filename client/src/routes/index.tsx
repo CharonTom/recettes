@@ -11,7 +11,6 @@ const AppRoutes: React.FC = () => (
     <Route path="/" element={<MainLayout />}>
       {/* publiques */}
       <Route index element={<Login />} />
-      <Route path="login" element={<Login />} />
       {/* <Route path="register" element={<Register />} /> */}
 
       {/* protégées  */}

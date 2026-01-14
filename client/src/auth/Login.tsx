@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { CiUser } from "react-icons/ci";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLock } from "react-icons/ci";
@@ -23,7 +24,16 @@ const Login: React.FC = () => {
         `${BASE_URL}/api/auth/login`,
         { email, password }
       );
-      setToken(response.data.token);
+      const rawToken = response.data.token;
+      // Décodage et affichage du contenu du token dans la console
+      try {
+        const decoded = jwtDecode(rawToken);
+        console.log("JWT décodé :", decoded);
+      } catch (decodeError) {
+        console.warn("Impossible de décoder le token JWT :", decodeError);
+      }
+
+      setToken(rawToken);
       navigate("/home", { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

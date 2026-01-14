@@ -11,6 +11,12 @@ import React, {
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
+// Type pour le contexte d'authentification
+interface AuthContextType {
+  token: string | null;
+  setToken: (token: string | null) => void;
+}
+
 // On initialise le contexte à `undefined` pour forcer le check dans useAuth()
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -46,12 +52,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       if (Date.now() >= exp * 1000) {
         // Token expiré : on nettoie et on redirige
         setToken(null);
-        window.location.href = "/login";
+        window.location.href = "/";
       }
     } catch {
       // Si le token n'est pas un JWT valide
       setToken(null);
-      window.location.href = "/login";
+      window.location.href = "/";
     }
   }, [token, setToken]);
 
@@ -60,9 +66,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response?.status === 401) {
+        const status = error.response?.status;
+        const url: string | undefined = error.config?.url;
+
+        const isAuthRoute =
+          url?.includes("/api/auth/login") || url?.includes("/api/auth/register");
+
+        // On ne redirige PAS sur les 401 des routes d'auth (login/register)
+        if (status === 401 && !isAuthRoute) {
           setToken(null);
-          window.location.href = "/login";
+          window.location.href = "/";
         }
         return Promise.reject(error);
       }

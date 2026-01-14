@@ -21,7 +21,9 @@ mongoose
 
 // Routes
 const authRoutes = require("./routes/user");
+const recipeRoutes = require("./routes/recipe");
 app.use("/api/auth", authRoutes);
+app.use("/api/recipes", recipeRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API lancée sur http://localhost:${PORT}`));

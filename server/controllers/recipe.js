@@ -11,6 +11,7 @@ exports.createRecipe = async (req, res) => {
       prepTime,
       cookTime,
       serves,
+      authorEmail,
     } = req.body;
 
     if (!title || !ingredients || !steps) {
@@ -28,6 +29,7 @@ exports.createRecipe = async (req, res) => {
       cookTime,
       serves,
       author: req.user.id,
+      authorEmail: req.user.email,
     });
 
     res.status(201).json(recipe);
@@ -79,6 +81,7 @@ exports.updateRecipe = async (req, res) => {
       cookTime,
       serves,
       isFavorite,
+      authorEmail,
     } = req.body;
 
     const recipe = await Recipe.findOneAndUpdate(
@@ -92,6 +95,7 @@ exports.updateRecipe = async (req, res) => {
         cookTime,
         serves,
         isFavorite,
+        authorEmail,
       },
       { new: true, runValidators: true }
     );

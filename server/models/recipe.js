@@ -15,7 +15,9 @@ const recipeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    authorEmail: String,
   },
+
   { timestamps: true }
 );
 

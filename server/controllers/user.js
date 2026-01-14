@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -12,12 +12,12 @@ exports.register = async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = new User({ email, passwordHash });
+    const user = new User({ email, passwordHash, name });
     await user.save();
 
     res.status(201).json({
       message: "Utilisateur créé",
-      user: { id: user._id, email: user.email },
+      user: { id: user._id, email: user.email, name: user.name },
     });
   } catch (err) {
     console.error(err);
@@ -39,14 +39,14 @@ exports.login = async (req, res) => {
 
     // Génération du token
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
     res.status(200).json({
       message: "Connexion réussie",
-      user: { id: user._id, email: user.email },
+      user: { id: user._id, email: user.email, name: user.name },
       token,
     });
   } catch (err) {

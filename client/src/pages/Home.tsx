@@ -13,11 +13,6 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-interface JwtPayload {
-  email?: string;
-  id?: string;
-}
-
 export interface Recipe {
   _id: string;
   title: string;
@@ -43,13 +38,19 @@ const Home = () => {
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
-  const userEmail = useMemo(() => {
-    if (!token) return "Utilisateur";
+  const { userEmail, userName } = useMemo(() => {
+    if (!token) return { userEmail: "Utilisateur", userName: "" };
+
     try {
-      const decoded = jwtDecode<JwtPayload>(token);
-      return decoded.email || "Utilisateur";
+      const decoded = jwtDecode<{ email?: string; name?: string }>(token);
+      console.log(jwtDecode<{ email?: string; name?: string }>(token));
+
+      return {
+        userEmail: decoded.email || "Utilisateur",
+        userName: decoded.name || "",
+      };
     } catch {
-      return "Utilisateur";
+      return { userEmail: "Utilisateur", userName: "" };
     }
   }, [token]);
 
@@ -91,8 +92,9 @@ const Home = () => {
       <section className="home-hero">
         <div className="container mx-auto px-4 py-12">
           <h2 className="home-hero-title">
-            Bienvenue, {userEmail.split("@")[0]} !
+            Bienvenue, {userName || userEmail.split("@")[0]} !
           </h2>
+
           <p className="home-hero-subtitle">
             Découvrez et partagez les recettes transmises de génération en
             génération

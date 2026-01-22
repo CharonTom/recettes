@@ -2,11 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { jwtDecode } from "jwt-decode";
-import { FaUtensils, FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaPlus } from "react-icons/fa";
+import Banner from "../assets/banner.jpg";
 
 interface JwtPayload {
   email?: string;
   id?: string;
+  name?: string;
 }
 
 const Header: React.FC = () => {
@@ -16,10 +18,10 @@ const Header: React.FC = () => {
   // Si pas de token (utilisateur non connecté), on n'affiche pas le header
   if (!token) return null;
 
-  let userEmail = "Utilisateur";
+  let userName;
   try {
     const decoded = jwtDecode<JwtPayload>(token);
-    userEmail = decoded.email || "Utilisateur";
+    userName = decoded.name;
   } catch {
     // en cas d'erreur de décodage, on garde la valeur par défaut
   }
@@ -30,28 +32,35 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="home-header">
-      <div className="container mx-auto px-4 py-4 flex-between">
-        <div className="flex items-center gap-3">
-          <div className="home-logo">
-            <FaUtensils className="text-2xl text-blue-400" />
-          </div>
-          <h1 className="text-xl font-bold text-slate-50">
-            Recettes de Famille
-          </h1>
+    <header className="h-80 relative">
+      <img src={Banner} alt="Banner" className="w-full h-full object-cover" />
+      <h1 className="absolute bottom-4 left-24 font-indie-flower text-pink-100 text-4xl md:text-5xl lg:text-6xl font-bold shadow-lg px-4 py-2 bg-black bg-opacity-50 rounded-md">
+        Les recettes familiales
+      </h1>
+
+      <div className="absolute top-4 right-4 flex items-center gap-4">
+        <div className="text-sm  flex items-center gap-2 bg-white px-2 rounded-xl shadow-md">
+          <div className="bg-green-600 h-2 w-2 rounded-full"></div>
+          Connecté en tant que {userName}{" "}
         </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-slate-400 hidden sm:inline">
-            {userEmail}
-          </span>
-          <button
-            onClick={handleLogout}
-            className="btn-secondary flex items-center gap-2"
-          >
-            <FaSignOutAlt />
-            <span className="hidden sm:inline">Déconnexion</span>
-          </button>
-        </div>
+        <button
+          onClick={handleLogout}
+          className="bg-pink-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-pink-700 transition cursor-pointer"
+        >
+          <FaSignOutAlt />
+          <span className="hidden sm:inline">Déconnexion</span>
+        </button>
+      </div>
+
+      <div className="absolute bottom-4 right-12">
+        <button
+          type="button"
+          onClick={() => navigate("/recipes/new")}
+          className="bg-pink-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-pink-700 transition cursor-pointer "
+        >
+          <FaPlus />
+          Ajouter une recette
+        </button>
       </div>
     </header>
   );

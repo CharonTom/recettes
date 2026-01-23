@@ -11,7 +11,6 @@ exports.createRecipe = async (req, res) => {
       prepTime,
       cookTime,
       serves,
-      authorEmail,
     } = req.body;
 
     if (!title || !ingredients || !steps) {
@@ -29,7 +28,6 @@ exports.createRecipe = async (req, res) => {
       cookTime,
       serves,
       author: req.user.id,
-      authorEmail: req.user.email,
     });
 
     res.status(201).json(recipe);
@@ -42,9 +40,10 @@ exports.createRecipe = async (req, res) => {
 // Récupérer toutes les recettes de l'utilisateur connecté
 exports.getMyRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find({ author: req.user.id }).sort({
-      createdAt: -1,
-    });
+    const recipes = await Recipe.find({ author: req.user.id })
+      .populate("author", "name")
+      .sort({ createdAt: -1 });
+
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err);
@@ -58,10 +57,12 @@ exports.getRecipeById = async (req, res) => {
     const recipe = await Recipe.findOne({
       _id: req.params.id,
       author: req.user.id,
-    });
+    }).populate("author", "name");
+
     if (!recipe) {
       return res.status(404).json({ message: "Recette introuvable" });
     }
+
     res.status(200).json(recipe);
   } catch (err) {
     console.error(err);
@@ -81,7 +82,6 @@ exports.updateRecipe = async (req, res) => {
       cookTime,
       serves,
       isFavorite,
-      authorEmail,
     } = req.body;
 
     const recipe = await Recipe.findOneAndUpdate(
@@ -95,9 +95,8 @@ exports.updateRecipe = async (req, res) => {
         cookTime,
         serves,
         isFavorite,
-        authorEmail,
       },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!recipe) {

@@ -60,14 +60,14 @@ const Home = () => {
   };
 
   return (
-    <main className="px-4 py-8 bg-pink-50">
+    <main className="px-4 py-8 bg-pink-50 min-h-screen">
       {/* Search */}
       <div className="flex-center mb-6 gap-2">
         <FaSearch className="text-xl text-slate-400" />
         <input
           type="text"
           placeholder="Rechercher une recette"
-          className="home-search-input"
+          className="border border-slate-300 rounded-md px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-pink-400"
           disabled
         />
       </div>
@@ -81,7 +81,7 @@ const Home = () => {
           Aucune recette pour le moment
         </p>
       ) : (
-        <div className="home-recipes-grid">
+        <div className="flex flex-wrap gap-6 my-20">
           {recipes.map((recipe) => (
             <RecipeCard
               key={recipe._id}

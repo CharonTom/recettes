@@ -6,17 +6,17 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }) => {
     <Link
       key={recipe._id}
       to={`/recipes/detail/${recipe._id}`}
-      className="home-recipe-card block hover:shadow-lg transition-shadow rounded-lg p-4"
+      className="block w-80 h-40 hover:shadow-lg transition-shadow rounded-lg p-4 bg-white border relative"
     >
-      <div className="flex-between mb-2">
-        <h4 className="text-lg font-semibold line-clamp-1">{recipe.title}</h4>
+      <div className="">
+        <h4 className="">{recipe.title}</h4>
         <button
           type="button"
           onClick={(e) => {
             e.preventDefault(); // empêche la navigation si on clique sur le trash
             handleDeleteRecipe(recipe._id);
           }}
-          className="text-slate-500 hover:text-red-400"
+          className="text-slate-500 hover:text-red-400 absolute top-4 right-4"
         >
           <FaTrash />
         </button>
@@ -28,9 +28,9 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }) => {
         </p>
       )}
 
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-slate-500 absolute bottom-4">
         Créée le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
-        {recipe.authorEmail && ` — publié par ${recipe.authorEmail}`}
+        {recipe.author && ` — publié par ${recipe.author.name}`}
       </p>
     </Link>
   );

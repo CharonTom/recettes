@@ -51,17 +51,6 @@ const Header: React.FC = () => {
           <span className="hidden sm:inline">Déconnexion</span>
         </button>
       </div>
-
-      <div className="absolute bottom-4 right-12">
-        <button
-          type="button"
-          onClick={() => navigate("/recipes/new")}
-          className="bg-pink-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-pink-700 transition cursor-pointer "
-        >
-          <FaPlus />
-          Ajouter une recette
-        </button>
-      </div>
     </header>
   );
 };

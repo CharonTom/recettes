@@ -3,30 +3,15 @@ const Recipe = require("../models/recipe");
 // Créer une recette
 exports.createRecipe = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      ingredients,
-      steps,
-      prepTime,
-      cookTime,
-      serves,
-    } = req.body;
+    const { title, description } = req.body;
 
-    if (!title || !ingredients || !steps) {
-      return res
-        .status(400)
-        .json({ message: "Titre, ingrédients et étapes sont obligatoires" });
+    if (!title) {
+      return res.status(400).json({ message: "Le titre est obligatoire" });
     }
 
     const recipe = await Recipe.create({
       title,
       description,
-      ingredients,
-      steps,
-      prepTime,
-      cookTime,
-      serves,
       author: req.user.id,
     });
 
@@ -73,28 +58,13 @@ exports.getRecipeById = async (req, res) => {
 // Mettre à jour une recette
 exports.updateRecipe = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      ingredients,
-      steps,
-      prepTime,
-      cookTime,
-      serves,
-      isFavorite,
-    } = req.body;
+    const { title, description } = req.body;
 
     const recipe = await Recipe.findOneAndUpdate(
       { _id: req.params.id, author: req.user.id },
       {
         title,
         description,
-        ingredients,
-        steps,
-        prepTime,
-        cookTime,
-        serves,
-        isFavorite,
       },
       { new: true, runValidators: true },
     );

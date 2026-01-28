@@ -1,34 +1,16 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { jwtDecode } from "jwt-decode";
-
-interface JwtPayload {
-  email?: string;
-  id?: string;
-}
 
 const CreateRecipe = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
-  // Récupération de l'email depuis le token
-  const authorEmail = useMemo(() => {
-    if (!token) return "";
-    try {
-      return jwtDecode<JwtPayload>(token)?.email ?? "";
-    } catch {
-      return "";
-    }
-  }, [token]);
-
   // State du formulaire
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [ingredients, setIngredients] = useState<string[]>([""]);
-  const [steps, setSteps] = useState<string[]>([""]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -47,9 +29,6 @@ const CreateRecipe = () => {
       await axios.post(`${BASE_URL}/api/recipes`, {
         title: title.trim(),
         description: description.trim(),
-        ingredients: ingredients.filter(Boolean),
-        steps: steps.filter(Boolean),
-        authorEmail, // Email ajouté automatiquement
       });
 
       navigate("/home"); // Redirection vers le dashboard
@@ -80,60 +59,10 @@ const CreateRecipe = () => {
         {/* Description */}
         <textarea
           placeholder="Description"
-          className="login-input min-h-[100px]"
+          className="login-input min-h-25"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-
-        {/* Ingrédients */}
-        <div>
-          <h4 className="mb-2 font-medium">Ingrédients</h4>
-          {ingredients.map((ing, i) => (
-            <input
-              key={i}
-              className="login-input mb-2"
-              placeholder={`Ingrédient ${i + 1}`}
-              value={ing}
-              onChange={(e) => {
-                const copy = [...ingredients];
-                copy[i] = e.target.value;
-                setIngredients(copy);
-              }}
-            />
-          ))}
-          <button
-            type="button"
-            onClick={() => setIngredients([...ingredients, ""])}
-            className="text-sm text-blue-400"
-          >
-            + Ajouter un ingrédient
-          </button>
-        </div>
-
-        {/* Étapes */}
-        <div>
-          <h4 className="mb-2 font-medium">Étapes</h4>
-          {steps.map((step, i) => (
-            <textarea
-              key={i}
-              className="login-input mb-2"
-              placeholder={`Étape ${i + 1}`}
-              value={step}
-              onChange={(e) => {
-                const copy = [...steps];
-                copy[i] = e.target.value;
-                setSteps(copy);
-              }}
-            />
-          ))}
-          <button
-            type="button"
-            onClick={() => setSteps([...steps, ""])}
-            className="text-sm text-blue-400"
-          >
-            + Ajouter une étape
-          </button>
-        </div>
 
         {/* Actions */}
         <div className="flex gap-4">

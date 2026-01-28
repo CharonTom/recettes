@@ -9,15 +9,12 @@ export interface Recipe {
   _id: string;
   title: string;
   description: string;
-  ingredients: string[];
-  steps: string[];
-  prepTime: number;
-  cookTime: number;
-  serves: number;
-  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
-  authorEmail?: string;
+  author?: {
+    _id: string;
+    name: string;
+  };
 }
 
 const Home = () => {
@@ -26,7 +23,7 @@ const Home = () => {
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -70,6 +67,17 @@ const Home = () => {
           className="border border-slate-300 rounded-md px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-pink-400"
           disabled
         />
+
+        {/* Bouton ajout */}
+
+        <button
+          type="button"
+          onClick={() => navigate("/recipes/new")}
+          className="bg-pink-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-pink-700 transition cursor-pointer"
+        >
+          <FaPlus />
+          Ajouter une recette
+        </button>
       </div>
 
       {/* Liste recettes */}
@@ -91,18 +99,6 @@ const Home = () => {
           ))}
         </div>
       )}
-
-      {/* Bouton ajout */}
-      <div className="mb-10 flex justify-end">
-        <button
-          type="button"
-          onClick={() => navigate("/recipes/new")}
-          className="bg-pink-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-pink-700 transition cursor-pointer"
-        >
-          <FaPlus />
-          Ajouter une recette
-        </button>
-      </div>
     </main>
   );
 };

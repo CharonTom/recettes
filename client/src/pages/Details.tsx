@@ -47,43 +47,16 @@ const Details = () => {
 
       <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
 
-      {recipe.authorEmail && (
-        <p className="text-sm text-slate-500 mb-4">
-          Publié par {recipe.authorEmail} le{" "}
-          {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
-        </p>
-      )}
+      <p className="text-sm text-slate-500 mb-4">
+        {recipe.author?.name && <>Publié par {recipe.author.name} — </>}
+        le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
+      </p>
 
       {recipe.description && (
-        <p className="mb-6 text-slate-700">{recipe.description}</p>
+        <p className="mb-6 text-slate-700 whitespace-pre-line">
+          {recipe.description}
+        </p>
       )}
-
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Ingrédients</h2>
-        <ul className="list-disc list-inside">
-          {recipe.ingredients.map((ing, i) => (
-            <li key={i}>{ing}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Étapes</h2>
-        <ol className="list-decimal list-inside">
-          {recipe.steps.map((step, i) => (
-            <li key={i} className="mb-1">
-              {step}
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div className="flex gap-6 text-slate-600">
-        <p>Préparation : {recipe.prepTime} min</p>
-        <p>Cuisson : {recipe.cookTime} min</p>
-        <p>Pour : {recipe.serves} personne(s)</p>
-        <p>Favori : {recipe.isFavorite ? "Oui" : "Non"}</p>
-      </div>
     </div>
   );
 };

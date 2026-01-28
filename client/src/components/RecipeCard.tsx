@@ -10,7 +10,7 @@ interface RecipeCardProps {
 const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
   const backgroundStyle = recipe.imageUrl
     ? {
-        backgroundImage: `linear-gradient(to bottom, rgba(15,23,42,0.52), rgba(15,23,42,0.78)), url(${recipe.imageUrl})`,
+        backgroundImage: `url(${recipe.imageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }
@@ -47,7 +47,7 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
       <div className="px-4 pb-3">
         <p className="recipe-card-meta">
           Créée le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
-          {recipe.author && ` — par ${recipe.author.name}`}
+          {recipe.author && ` par ${recipe.author.name}`}
         </p>
       </div>
     </Link>

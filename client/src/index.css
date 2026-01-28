@@ -16,7 +16,8 @@
 /* Auth (cuisine theme) */
 @utility auth-kitchen-bg {
   @apply min-h-screen flex items-center justify-center px-4 py-10;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       1200px 700px at 15% 10%,
       rgba(251, 191, 36, 0.18),
       transparent 55%
@@ -88,7 +89,7 @@
 }
 
 @utility recipe-card-meta {
-  @apply mt-2 text-[11px] text-slate-500;
+  @apply bg-white rounded-full px-2 mt-2 text-[11px] text-slate-800 w-fit;
 }
 
 @utility recipe-card-description {

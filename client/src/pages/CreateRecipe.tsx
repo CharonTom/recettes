@@ -5,13 +5,14 @@ import { useAuth } from "../contexts/AuthContext";
 
 const CreateRecipe = () => {
   const navigate = useNavigate();
-  const { token } = useAuth();
+  useAuth(); // on garde le hook pour s'assurer que l'utilisateur est authentifié
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
   // State du formulaire
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,9 +27,17 @@ const CreateRecipe = () => {
       setLoading(true);
       setError(null);
 
-      await axios.post(`${BASE_URL}/api/recipes`, {
-        title: title.trim(),
-        description: description.trim(),
+      const formData = new FormData();
+      formData.append("title", title.trim());
+      formData.append("description", description.trim());
+      if (image) {
+        formData.append("image", image);
+      }
+
+      await axios.post(`${BASE_URL}/api/recipes`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       navigate("/home"); // Redirection vers le dashboard
@@ -63,6 +72,21 @@ const CreateRecipe = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        {/* Image */}
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Image de la recette (optionnelle)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              setImage(file);
+            }}
+          />
+        </div>
 
         {/* Actions */}
         <div className="flex gap-4">

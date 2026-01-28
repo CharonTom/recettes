@@ -1,12 +1,27 @@
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import type { Recipe } from "../pages/Home";
 
-const RecipeCard = ({ recipe, handleDeleteRecipe }) => {
+interface RecipeCardProps {
+  recipe: Recipe;
+  handleDeleteRecipe: (id: string) => void;
+}
+
+const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
+  const backgroundStyle = recipe.imageUrl
+    ? {
+        backgroundImage: `linear-gradient(to bottom, rgba(15,23,42,0.52), rgba(15,23,42,0.78)), url(${recipe.imageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }
+    : undefined;
+
   return (
     <Link
       key={recipe._id}
       to={`/recipes/detail/${recipe._id}`}
       className="recipe-card"
+      style={backgroundStyle}
     >
       <div className="p-4 pb-2">
         <div className="recipe-card-header">

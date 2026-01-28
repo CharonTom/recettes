@@ -9,9 +9,12 @@ exports.createRecipe = async (req, res) => {
       return res.status(400).json({ message: "Le titre est obligatoire" });
     }
 
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
+
     const recipe = await Recipe.create({
       title,
       description,
+      imageUrl,
       author: req.user.id,
     });
 

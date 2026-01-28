@@ -23,7 +23,9 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }) => {
           <FaTrash />
         </button>
         {recipe.description && (
-          <p className="recipe-card-description mt-1">{recipe.description}</p>
+          <p className="recipe-card-description mt-1 whitespace-pre-line">
+            {recipe.description}
+          </p>
         )}
       </div>
 

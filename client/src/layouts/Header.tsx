@@ -39,8 +39,8 @@ const Header: React.FC = () => {
       </h1>
 
       <div className="absolute top-4 right-4 flex items-center gap-4">
-        <div className="text-sm  flex items-center gap-2 bg-white px-2 rounded-xl shadow-md">
-          <div className="bg-green-600 h-2 w-2 rounded-full"></div>
+        <div className="auth-badge">
+          <div className="h-2 w-2 rounded-full bg-emerald-400"></div>
           Connecté en tant que {userName}{" "}
         </div>
         <button

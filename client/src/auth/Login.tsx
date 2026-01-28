@@ -42,70 +42,75 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="login-page relative">
-      <div className="login-card">
-        <header className="mb-8 space-y-2 text-center">
-          <h1 className="login-title">Connectez-vous à votre compte</h1>
-          <p className="login-subtitle">
-            Accédez à vos recettes de famille en toute sécurité.
-          </p>
-        </header>
+    <section className="auth-kitchen-bg">
+      <div className="auth-card">
+        <div className="auth-card-inner">
+          <header className="text-center">
+            <h1 className="auth-title font-indie-flower">
+              Les recettes familiales
+            </h1>
+            <p className="auth-subtitle">
+              Connectez vous et accédez à vos recettes.
+            </p>
+          </header>
 
-        {error && <p className="login-error">{error}</p>}
+          {error && <p className="auth-error mt-6">{error}</p>}
 
-        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            {/* Email */}
-            <div className="login-field">
-              <CiUser className="text-2xl text-slate-400" />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="login-input"
-                placeholder="Votre adresse e-mail"
-              />
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              {/* Email */}
+              <div className="auth-field">
+                <CiUser className="text-2xl text-slate-300" />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="auth-input"
+                  placeholder="Votre adresse e-mail"
+                />
+              </div>
+
+              {/* Mot de passe */}
+              <div className="auth-field">
+                <CiLock className="text-2xl text-slate-300" />
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"} // ← type dynamique
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="auth-input"
+                  placeholder="Votre mot de passe"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="text-xl text-slate-300 hover:text-white transition-colors"
+                  aria-label={
+                    showPassword
+                      ? "Masquer le mot de passe"
+                      : "Afficher le mot de passe"
+                  }
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
 
-            {/* Mot de passe */}
-            <div className="login-field">
-              <CiLock className="text-2xl text-slate-400" />
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"} // ← type dynamique
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="login-input"
-                placeholder="Votre mot de passe"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="text-xl text-slate-400 hover:text-slate-200 transition-colors"
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-          </div>
-
-          <button type="submit" className="btn-primary w-full mt-2">
-            Se connecter
-          </button>
-        </form>
-
-        <p className="login-footer">
-          Pas encore inscrit ?{" "}
-          <Link to="/register" className="underline hover:text-blue-300">
-            Inscrivez-vous ici
-          </Link>
-        </p>
+            <button
+              type="submit"
+              className="w-full bg-pink-400 px-5 py-3 font-semibold rounded-xl text-white cursor-pointer hover:bg-pink-500 transition"
+            >
+              Se connecter
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );

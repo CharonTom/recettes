@@ -81,7 +81,7 @@ const Home = () => {
           Aucune recette pour le moment
         </p>
       ) : (
-        <div className="flex flex-wrap gap-6 my-20">
+        <div className="flex-center flex-wrap gap-6 my-20">
           {recipes.map((recipe) => (
             <RecipeCard
               key={recipe._id}

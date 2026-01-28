@@ -6,32 +6,33 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }) => {
     <Link
       key={recipe._id}
       to={`/recipes/detail/${recipe._id}`}
-      className="block w-80 h-40 hover:shadow-lg transition-shadow rounded-lg p-4 bg-white border relative"
+      className="recipe-card"
     >
-      <div className="">
-        <h4 className="">{recipe.title}</h4>
+      <div className="p-4 pb-2">
+        <div className="recipe-card-header">
+          <h4 className="recipe-card-title">{recipe.title}</h4>
+        </div>
         <button
           type="button"
           onClick={(e) => {
             e.preventDefault(); // empêche la navigation si on clique sur le trash
             handleDeleteRecipe(recipe._id);
           }}
-          className="text-slate-500 hover:text-red-400 absolute top-4 right-4"
+          className="text-slate-400 hover:text-red-400 absolute top-3 right-3 bg-white/90 rounded-full p-1 shadow-sm"
         >
           <FaTrash />
         </button>
+        {recipe.description && (
+          <p className="recipe-card-description mt-1">{recipe.description}</p>
+        )}
       </div>
 
-      {recipe.description && (
-        <p className="text-sm text-slate-400 line-clamp-2 mb-2">
-          {recipe.description}
+      <div className="px-4 pb-3">
+        <p className="recipe-card-meta">
+          Créée le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
+          {recipe.author && ` — par ${recipe.author.name}`}
         </p>
-      )}
-
-      <p className="text-xs text-slate-500 absolute bottom-4">
-        Créée le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
-        {recipe.author && ` — publié par ${recipe.author.name}`}
-      </p>
+      </div>
     </Link>
   );
 };

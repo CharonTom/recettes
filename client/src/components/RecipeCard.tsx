@@ -8,9 +8,14 @@ interface RecipeCardProps {
 }
 
 const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
-  const backgroundStyle = recipe.imageUrl
+  const firstImage =
+    recipe.imageUrls && recipe.imageUrls.length > 0
+      ? recipe.imageUrls[0]
+      : undefined;
+
+  const backgroundStyle = firstImage
     ? {
-        backgroundImage: `url(${recipe.imageUrl})`,
+        backgroundImage: `url(${firstImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }

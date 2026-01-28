@@ -10,12 +10,14 @@ exports.createRecipe = async (req, res) => {
     }
 
     const baseUrl = `${req.protocol}://${req.get("host")}`;
-    const imageUrl = req.file ? `${baseUrl}/uploads/${req.file.filename}` : "";
+    const imageUrls = Array.isArray(req.files)
+      ? req.files.map((file) => `${baseUrl}/uploads/${file.filename}`)
+      : [];
 
     const recipe = await Recipe.create({
       title,
       description,
-      imageUrl,
+      imageUrls,
       author: req.user.id,
     });
 

@@ -4,7 +4,7 @@ const recipeSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, default: "" },
-    imageUrl: { type: String, default: "" },
+    imageUrls: [{ type: String, default: [] }],
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

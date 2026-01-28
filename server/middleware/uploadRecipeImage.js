@@ -33,4 +33,5 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo
 });
 
-module.exports = upload.single("image");
+// Champ `images` pour accepter plusieurs fichiers
+module.exports = upload.array("images", 5);

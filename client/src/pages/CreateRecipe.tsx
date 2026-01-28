@@ -12,7 +12,7 @@ const CreateRecipe = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [image, setImage] = useState<File | null>(null);
+  const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,9 +30,9 @@ const CreateRecipe = () => {
       const formData = new FormData();
       formData.append("title", title.trim());
       formData.append("description", description.trim());
-      if (image) {
-        formData.append("image", image);
-      }
+      images.forEach((file) => {
+        formData.append("images", file);
+      });
 
       await axios.post(`${BASE_URL}/api/recipes`, formData, {
         headers: {
@@ -73,17 +73,18 @@ const CreateRecipe = () => {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        {/* Image */}
+        {/* Images */}
         <div>
           <label className="block text-sm font-medium mb-2">
-            Image de la recette (optionnelle)
+            Images de la recette (optionnelles)
           </label>
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={(e) => {
-              const file = e.target.files?.[0] ?? null;
-              setImage(file);
+              const files = e.target.files ? Array.from(e.target.files) : [];
+              setImages(files);
             }}
           />
         </div>

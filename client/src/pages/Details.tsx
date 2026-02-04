@@ -6,7 +6,6 @@ import type { Recipe } from "./Home";
 import { FaArrowLeft } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import Carousel from "../components/Carousel";
-import DefaultImage from "../assets/default.jpg";
 
 const Details = () => {
   const { id } = useParams<{ id: string }>();
@@ -54,13 +53,11 @@ const Details = () => {
 
   if (!recipe) return null;
 
-  const images = recipe.imageUrls?.length ? recipe.imageUrls : [DefaultImage];
-
   return (
     <main className="details-page">
       <article className="details-card">
         {/* Carrousel d'images */}
-        <Carousel images={images} alt={recipe.title} />
+        <Carousel images={recipe.imageUrls} alt={recipe.title} />
 
         {/* Contenu texte */}
         <div className="details-content">

@@ -28,10 +28,10 @@ exports.createRecipe = async (req, res) => {
   }
 };
 
-// Récupérer toutes les recettes de l'utilisateur connecté
-exports.getMyRecipes = async (req, res) => {
+// Récupérer toutes les recettes (tous utilisateurs)
+exports.getAllRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find({ author: req.user.id })
+    const recipes = await Recipe.find({})
       .populate("author", "name")
       .sort({ createdAt: -1 });
 
@@ -45,10 +45,10 @@ exports.getMyRecipes = async (req, res) => {
 // Récupérer une recette par id
 exports.getRecipeById = async (req, res) => {
   try {
-    const recipe = await Recipe.findOne({
-      _id: req.params.id,
-      author: req.user.id,
-    }).populate("author", "name");
+    const recipe = await Recipe.findById(req.params.id).populate(
+      "author",
+      "name",
+    );
 
     if (!recipe) {
       return res.status(404).json({ message: "Recette introuvable" });

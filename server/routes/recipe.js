@@ -7,7 +7,7 @@ const auth = require("../middleware/auth");
 // Toutes les routes recettes sont protégées par le middleware d'auth
 router.use(auth);
 
-router.get("/", recipeController.getMyRecipes);
+router.get("/", recipeController.getAllRecipes);
 router.post("/", uploadRecipeImage, recipeController.createRecipe);
 router.get("/:id", recipeController.getRecipeById);
 router.put("/:id", recipeController.updateRecipe);

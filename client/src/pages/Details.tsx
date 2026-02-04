@@ -13,6 +13,8 @@ const Details = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -32,32 +34,191 @@ const Details = () => {
     if (id) fetchRecipe();
   }, [id, BASE_URL]);
 
-  if (loading) return <p className="text-slate-400">Chargement...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading)
+    return (
+      <main className="details-page flex-center">
+        <p className="text-slate-400">Chargement...</p>
+      </main>
+    );
+
+  if (error)
+    return (
+      <main className="details-page flex-center">
+        <p className="text-red-500">{error}</p>
+      </main>
+    );
+
   if (!recipe) return null;
 
+  const hasImages = recipe.imageUrls && recipe.imageUrls.length > 0;
+  const totalImages = hasImages ? recipe.imageUrls!.length : 0;
+
+  const handlePrevImage = () => {
+    if (!hasImages) return;
+    setCurrentImageIndex((prev) => (prev === 0 ? totalImages - 1 : prev - 1));
+  };
+
+  const handleNextImage = () => {
+    if (!hasImages) return;
+    setCurrentImageIndex((prev) => (prev === totalImages - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <div className="container mx-auto px-4 py-10 max-w-3xl">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-6 flex items-center gap-2 text-blue-500"
-      >
-        <FaArrowLeft /> Retour
-      </button>
+    <main className="details-page">
+      <article className="details-card">
+        {/* Carrousel d'images */}
+        {hasImages && (
+          <div className="details-image-wrapper cursor-zoom-in">
+            <img
+              src={recipe.imageUrls![currentImageIndex]}
+              alt={recipe.title}
+              className="details-image"
+              onClick={() => setIsFullscreen(true)}
+            />
 
-      <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
+            {totalImages > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handlePrevImage}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-pink-600 shadow-md w-9 h-9 flex items-center justify-center text-lg cursor-pointer"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextImage}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-pink-600 shadow-md w-9 h-9 flex items-center justify-center text-lg cursor-pointer"
+                >
+                  ›
+                </button>
 
-      <p className="text-sm text-slate-500 mb-4">
-        {recipe.author?.name && <>Publié par {recipe.author.name} — </>}
-        le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
-      </p>
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/50 backdrop-blur text-[10px] text-slate-100">
+                  {recipe.imageUrls!.map((_, index) => (
+                    <span
+                      key={index}
+                      className={`h-1.5 rounded-full transition-all ${
+                        index === currentImageIndex
+                          ? "w-4 bg-pink-400"
+                          : "w-2 bg-slate-400/70"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
 
-      {recipe.description && (
-        <p className="mb-6 text-slate-700 whitespace-pre-line">
-          {recipe.description}
-        </p>
+            {/* Bouton pour le plein écran */}
+            <button
+              type="button"
+              onClick={() => setIsFullscreen(true)}
+              className="absolute bottom-3 right-3 rounded-full bg-slate-900/70 hover:bg-slate-900 text-xs sm:text-[13px] text-slate-50 px-4 py-2 shadow-md cursor-pointer"
+            >
+              Cliquer l'image pour voir en plein écran
+            </button>
+          </div>
+        )}
+
+        {/* Contenu texte */}
+        <div className="details-content">
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 text-sm text-pink-600 hover:text-pink-700 mb-2 cursor-pointer"
+          >
+            <FaArrowLeft className="text-xs" />
+            Retour aux recettes
+          </button>
+
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+            {recipe.title}
+          </h1>
+
+          <div className="details-meta">
+            {recipe.author?.name && (
+              <span className="details-meta-chip">
+                Recette de {recipe.author.name}
+              </span>
+            )}
+
+            <span className="text-xs text-slate-500">
+              Publiée le{" "}
+              {new Date(recipe.createdAt).toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+
+          {recipe.description && (
+            <section>
+              <h2 className="text-sm font-semibold text-slate-800 mb-2 uppercase tracking-wide">
+                Description
+              </h2>
+              <p className="details-description">{recipe.description}</p>
+            </section>
+          )}
+        </div>
+      </article>
+
+      {/* Modal plein écran */}
+      {isFullscreen && hasImages && (
+        <div className="fixed inset-0 z-50 bg-slate-950/90 flex items-center justify-center px-4">
+          <div className="relative w-full max-w-5xl">
+            <button
+              type="button"
+              onClick={() => setIsFullscreen(false)}
+              className="absolute -top-10 right-0 text-slate-200 hover:text-white text-sm underline underline-offset-4 cursor-pointer"
+            >
+              Fermer
+            </button>
+
+            <div className="relative bg-slate-900/60 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl">
+              <img
+                src={recipe.imageUrls![currentImageIndex]}
+                alt={recipe.title}
+                className="w-full max-h-[80vh] object-contain bg-black"
+              />
+
+              {totalImages > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handlePrevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white text-pink-600 shadow-lg w-11 h-11 flex items-center justify-center text-2xl cursor-pointer"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white text-pink-600 shadow-lg w-11 h-11 flex items-center justify-center text-2xl cursor-pointer"
+                  >
+                    ›
+                  </button>
+
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/65 backdrop-blur text-[11px] text-slate-100">
+                    {recipe.imageUrls!.map((_, index) => (
+                      <span
+                        key={index}
+                        className={`h-1.5 rounded-full transition-all ${
+                          index === currentImageIndex
+                            ? "w-5 bg-pink-400"
+                            : "w-2 bg-slate-500/70"
+                        }`}
+                      />
+                    ))}
+                    <span className="ml-1 opacity-80">
+                      {currentImageIndex + 1} / {totalImages}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       )}
-    </div>
+    </main>
   );
 };
 

@@ -34,7 +34,7 @@ const Header: React.FC = () => {
   return (
     <header className="h-80 relative">
       <img src={Banner} alt="Banner" className="w-full h-full object-cover" />
-      <h1 className="absolute bottom-4 left-24 font-indie-flower text-pink-100 text-4xl md:text-5xl lg:text-6xl font-bold shadow-lg px-4 py-2 bg-black bg-opacity-50 rounded-md">
+      <h1 className="absolute bottom-4 left-24 font-indie-flower text-pink-100 text-4xl md:text-5xl lg:text-6xl font-bold shadow-lg px-4 py-2 bg-black bg-opacity-50 rounded-md ">
         Les recettes familiales
       </h1>
 

@@ -46,6 +46,7 @@ const Home = () => {
 
     if (token) fetchRecipes();
   }, [BASE_URL, token]);
+  console.log(recipes);
 
   const handleDeleteRecipe = async (id: string) => {
     try {

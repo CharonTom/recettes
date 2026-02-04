@@ -75,7 +75,7 @@ const Home = () => {
         <button
           type="button"
           onClick={() => navigate("/recipes/new")}
-          className="bg-pink-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-pink-700 transition cursor-pointer"
+          className="button-primary flex items-center gap-2"
         >
           <FaPlus />
           Ajouter une recette

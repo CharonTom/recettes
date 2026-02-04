@@ -50,61 +50,129 @@ const CreateRecipe = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-3xl">
-      <h2 className="text-2xl font-semibold mb-8">Nouvelle recette</h2>
+    <main className="details-page">
+      <section className="details-card max-w-2xl mx-auto">
+        <div className="details-content">
+          <header className="mb-6">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+              Créer une nouvelle recette
+            </h1>
+            <p className="mt-2 text-sm text-slate-500">
+              Donne un joli titre, décris ta recette et ajoute quelques photos
+              si tu le souhaites.
+            </p>
+          </header>
 
-      {error && <p className="login-error mb-4">{error}</p>}
+          {error && (
+            <p className="mb-4 rounded-xl border border-pink-400 bg-pink-50 px-4 py-3 text-sm text-pink-700">
+              {error}
+            </p>
+          )}
 
-      <form onSubmit={handleSubmit} className="grid gap-6">
-        {/* Titre */}
-        <input
-          type="text"
-          placeholder="Titre de la recette"
-          className="login-input"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              {/* Titre */}
+              <div>
+                <label
+                  htmlFor="title"
+                  className="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2"
+                >
+                  Titre de la recette
+                </label>
+                <input
+                  id="title"
+                  type="text"
+                  placeholder="Note ici le titre de la recette"
+                  className="w-full rounded-2xl border border-pink-500 bg-white/95 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-400/40 focus:border-pink-500 transition"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
 
-        {/* Description */}
-        <textarea
-          placeholder="Description"
-          className="login-input min-h-25"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+              {/* Description */}
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  placeholder="Note ici les ingrédients, les étapes..."
+                  className="w-full rounded-2xl border border-pink-500 bg-white/95 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-400/40 focus:border-pink-500 transition min-h-32 resize-none"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
 
-        {/* Images */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Images de la recette (optionnelles)
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => {
-              const files = e.target.files ? Array.from(e.target.files) : [];
-              setImages(files);
-            }}
-          />
+              {/* Images */}
+              <div>
+                <label
+                  htmlFor="images"
+                  className="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-4"
+                >
+                  Photos de la recette (optionnelles)
+                </label>
+
+                <label htmlFor="images" className="button-primary">
+                  Choisir mes images
+                </label>
+
+                <input
+                  id="images"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => {
+                    const files = e.target.files
+                      ? Array.from(e.target.files)
+                      : [];
+                    setImages(files);
+                  }}
+                />
+
+                <p className="mt-2 text-xs text-slate-500">
+                  {images.length > 0
+                    ? `${images.length} fichier(s) sélectionné(s)`
+                    : "Aucune image sélectionnée pour l’instant."}
+                </p>
+
+                {images.length > 0 && (
+                  <ul className="mt-1 text-xs text-slate-500 space-y-1">
+                    {images.map((file) => (
+                      <li key={file.name} className="truncate">
+                        {file.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-wrap gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="button-primary"
+              >
+                {loading ? "Création en cours..." : "Créer la recette"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="button-secondary"
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
         </div>
-
-        {/* Actions */}
-        <div className="flex gap-4">
-          <button type="submit" disabled={loading} className="btn-primary">
-            {loading ? "Création..." : "Créer la recette"}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="btn-secondary"
-          >
-            Annuler
-          </button>
-        </div>
-      </form>
-    </div>
+      </section>
+    </main>
   );
 };
 

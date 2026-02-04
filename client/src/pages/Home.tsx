@@ -24,7 +24,7 @@ const Home = () => {
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
-  const [, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -34,11 +34,13 @@ const Home = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get<Recipe[]>(`${BASE_URL}/api/recipes`);
+        const res = await axios.get(`${BASE_URL}/api/recipes`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setRecipes(res.data);
       } catch (err) {
         console.error(err);
-        setError("Impossible de charger les recettes pour le moment.");
+        setError("Impossible de charger les recettes");
       } finally {
         setLoading(false);
       }
@@ -50,13 +52,23 @@ const Home = () => {
 
   const handleDeleteRecipe = async (id: string) => {
     try {
-      await axios.delete(`${BASE_URL}/api/recipes/${id}`);
+      await axios.delete(`${BASE_URL}/api/recipes/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setRecipes((prev) => prev.filter((r) => r._id !== id));
     } catch (err) {
       console.error(err);
       setError("Erreur lors de la suppression de la recette.");
     }
   };
+
+  if (error) {
+    return (
+      <main className="px-4 py-8 bg-pink-50 min-h-screen">
+        <p className="text-red-500">{error}</p>
+      </main>
+    );
+  }
 
   return (
     <main className="px-4 py-8 bg-pink-50 min-h-screen">

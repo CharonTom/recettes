@@ -69,7 +69,7 @@ const Details = () => {
 
   return (
     <main className="details-page">
-      <article className="details-card">
+      <section className="details-card">
         {/* Carrousel d'images */}
         <Carousel images={recipe.imageUrls} alt={recipe.title} />
 
@@ -125,7 +125,7 @@ const Details = () => {
             </section>
           )}
         </div>
-      </article>
+      </section>
     </main>
   );
 };

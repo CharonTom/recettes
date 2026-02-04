@@ -1,4 +1,4 @@
-import { FaTrash, FaPen } from "react-icons/fa";
+import { FaTrash, FaPen, FaRegEdit } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import type { Recipe } from "../pages/Home";
@@ -6,6 +6,7 @@ import DefaultImage from "../assets/default.jpg";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { FiTrash2 } from "react-icons/fi";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -51,43 +52,45 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
         className="recipe-card"
         style={backgroundStyle}
       >
-        <div className="p-4 pb-2">
-          <div className="recipe-card-header relative">
-            <h4 className="recipe-card-title">{recipe.title}</h4>
-            {isOwner && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  navigate(`/recipes/update/${recipe._id}`);
-                }}
-                className="text-pink-500 hover:text-pink-800 absolute top-0 right-8 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer"
-              >
-                <FaPen />
-              </button>
-            )}
-            {isOwner && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsConfirmDeleteOpen(true);
-                }}
-                className="text-pink-500 hover:text-pink-800 absolute top-0 right-0 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer"
-              >
-                <FaTrash />
-              </button>
-            )}
+        <article className="p-4 pb-2">
+          <div>
+            <div className="relative">
+              <h4 className="text-white [text-shadow:_3px_3px_3px_rgb(0_0_0_/_30%)] bg-pink-400/80 inline-block px-2 py-1 rounded-md font-semibold text-lg max-w-[80%]">
+                {recipe.title}
+              </h4>
+              {isOwner && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigate(`/recipes/update/${recipe._id}`);
+                  }}
+                  className="text-pink-500 hover:text-pink-800 absolute top-0 right-8 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer text-xl"
+                >
+                  <FaRegEdit />
+                </button>
+              )}
+              {isOwner && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsConfirmDeleteOpen(true);
+                  }}
+                  className="text-pink-500 hover:text-pink-800 absolute top-0 right-0 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer text-xl"
+                >
+                  <FiTrash2 />
+                </button>
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="px-4 pb-3">
-          <p className="recipe-card-meta">
+          <p className="recipe-card-meta absolute bottom-4">
             Publiée le {new Date(recipe.createdAt).toLocaleDateString("fr-FR")}
             {recipe.author && ` par ${recipe.author.name}`}
           </p>
-        </div>
+        </article>
       </Link>
       <ConfirmDeleteModal
         open={isConfirmDeleteOpen}

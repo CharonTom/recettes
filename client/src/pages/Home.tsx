@@ -72,47 +72,49 @@ const Home = () => {
 
   return (
     <main className="px-4 py-8 bg-pink-50 min-h-screen">
-      {/* Search */}
-      <div className="flex-center mb-6 gap-2">
-        <FaSearch className="text-xl text-slate-400" />
-        <input
-          type="text"
-          placeholder="Rechercher une recette"
-          className="border border-slate-300 rounded-md px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-pink-400"
-          disabled
-        />
+      <section>
+        {/* Search */}
+        <div className="flex-center mb-6 gap-2">
+          <FaSearch className="text-xl text-slate-400" />
+          <input
+            type="text"
+            placeholder="Rechercher une recette"
+            className="border border-slate-300 rounded-md px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-pink-400"
+            disabled
+          />
 
-        {/* Bouton ajout */}
+          {/* Bouton ajout */}
 
-        <button
-          type="button"
-          onClick={() => navigate("/recipes/new")}
-          className="button-primary flex items-center gap-2"
-        >
-          <FaPlus />
-          Ajouter une recette
-        </button>
-      </div>
-
-      {/* Liste recettes */}
-
-      {loading ? (
-        <p className="text-slate-400">Chargement des recettes...</p>
-      ) : recipes.length === 0 ? (
-        <p className="text-slate-500 flex-center p-6">
-          Aucune recette pour le moment
-        </p>
-      ) : (
-        <div className="flex-center flex-wrap gap-6 my-20">
-          {recipes.map((recipe) => (
-            <RecipeCard
-              key={recipe._id}
-              recipe={recipe}
-              handleDeleteRecipe={handleDeleteRecipe}
-            />
-          ))}
+          <button
+            type="button"
+            onClick={() => navigate("/recipes/new")}
+            className="button-primary flex items-center gap-2"
+          >
+            <FaPlus />
+            Ajouter une recette
+          </button>
         </div>
-      )}
+
+        {/* Liste recettes */}
+
+        {loading ? (
+          <p className="text-slate-400">Chargement des recettes...</p>
+        ) : recipes.length === 0 ? (
+          <p className="text-slate-500 flex-center p-6">
+            Aucune recette pour le moment
+          </p>
+        ) : (
+          <div className="flex-center flex-wrap gap-6 my-20">
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe._id}
+                recipe={recipe}
+                handleDeleteRecipe={handleDeleteRecipe}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     </main>
   );
 };

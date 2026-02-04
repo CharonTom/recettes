@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DefaultImage from "../assets/default.jpg";
 import FullScreenCarouselModal from "../components/FullScreenCarouselModal";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface CarouselProps {
   images?: string[];
@@ -39,14 +40,14 @@ const Carousel = ({ images, alt = "Image" }: CarouselProps) => {
               onClick={handlePrev}
               className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-pink-600 shadow-md w-9 h-9 flex items-center justify-center text-lg cursor-pointer"
             >
-              ‹
+              <FaChevronLeft />
             </button>
             <button
               type="button"
               onClick={handleNext}
               className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-pink-600 shadow-md w-9 h-9 flex items-center justify-center text-lg cursor-pointer"
             >
-              ›
+              <FaChevronRight />
             </button>
 
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/50 backdrop-blur text-[10px] text-slate-100">

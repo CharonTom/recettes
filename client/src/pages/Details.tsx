@@ -6,6 +6,7 @@ import type { Recipe } from "./Home";
 import { FaArrowLeft } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import Carousel from "../components/Carousel";
+import { jwtDecode } from "jwt-decode";
 
 const Details = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,16 @@ const Details = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  let currentUserId: string | null = null;
+  if (token) {
+    try {
+      const decoded = jwtDecode<{ id: string }>(token);
+      currentUserId = decoded.id ?? null;
+    } catch {
+      currentUserId = null;
+    }
+  }
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -53,6 +64,9 @@ const Details = () => {
 
   if (!recipe) return null;
 
+  const canUpdate =
+    !!currentUserId && recipe.author && recipe.author._id === currentUserId;
+
   return (
     <main className="details-page">
       <article className="details-card">
@@ -61,13 +75,25 @@ const Details = () => {
 
         {/* Contenu texte */}
         <div className="details-content">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 button-primary mb-4"
-          >
-            <FaArrowLeft className="text-xs" />
-            Retour aux recettes
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 button-primary"
+            >
+              <FaArrowLeft className="text-xs" />
+              Retour aux recettes
+            </button>
+
+            {canUpdate && (
+              <button
+                type="button"
+                onClick={() => navigate(`/recipes/update/${recipe._id}`)}
+                className="button-secondary"
+              >
+                Modifier la recette
+              </button>
+            )}
+          </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             {recipe.title}

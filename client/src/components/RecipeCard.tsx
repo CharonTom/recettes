@@ -1,5 +1,5 @@
-import { FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaTrash, FaPen } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import type { Recipe } from "../pages/Home";
 import DefaultImage from "../assets/default.jpg";
@@ -14,6 +14,7 @@ interface RecipeCardProps {
 
 const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   let currentUserId: string | null = null;
@@ -39,7 +40,7 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
       }
     : undefined;
 
-  const canDelete =
+  const isOwner =
     !!currentUserId && recipe.author && recipe.author._id === currentUserId;
 
   return (
@@ -53,14 +54,27 @@ const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
         <div className="p-4 pb-2">
           <div className="recipe-card-header relative">
             <h4 className="recipe-card-title">{recipe.title}</h4>
-            {canDelete && (
+            {isOwner && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate(`/recipes/update/${recipe._id}`);
+                }}
+                className="text-pink-500 hover:text-pink-800 absolute top-0 right-8 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer"
+              >
+                <FaPen />
+              </button>
+            )}
+            {isOwner && (
               <button
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   setIsConfirmDeleteOpen(true);
                 }}
-                className="text-pink-500 hover:text-red-800 absolute top-0 right-0 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer"
+                className="text-pink-500 hover:text-pink-800 absolute top-0 right-0 bg-white/90 rounded-full p-1 shadow-sm cursor-pointer"
               >
                 <FaTrash />
               </button>

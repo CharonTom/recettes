@@ -7,6 +7,7 @@ import Home from "../pages/Home";
 import Login from "../auth/Login";
 import CreateRecipe from "../pages/CreateRecipe";
 import Details from "../pages/Details";
+import UpdateRecipe from "../pages/UpdateRecipe";
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -19,6 +20,7 @@ const AppRoutes: React.FC = () => (
       <Route element={<PrivateRoute />}>
         <Route path="home" element={<Home />} />
         <Route path="recipes/new" element={<CreateRecipe />} />
+        <Route path="recipes/update/:id" element={<UpdateRecipe />} />
         <Route path="recipes/detail/:id" element={<Details />} />
       </Route>
 

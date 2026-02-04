@@ -7,14 +7,12 @@ interface CarouselProps {
   alt?: string;
 }
 
-const Carousel = ({
-  images = [DefaultImage],
-  alt = "Image",
-}: CarouselProps) => {
+const Carousel = ({ images, alt = "Image" }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const totalImages = images.length;
+  const imgs = images && images.length > 0 ? images : [DefaultImage];
+  const totalImages = imgs.length;
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? totalImages - 1 : prev - 1));
@@ -28,7 +26,7 @@ const Carousel = ({
     <div className="relative">
       <div className="details-image-wrapper cursor-zoom-in">
         <img
-          src={images[currentIndex]}
+          src={imgs[currentIndex]}
           alt={alt}
           className="details-image w-full max-h-100 object-cover rounded-lg"
           onClick={() => setIsFullscreen(true)}
@@ -52,7 +50,7 @@ const Carousel = ({
             </button>
 
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/50 backdrop-blur text-[10px] text-slate-100">
-              {images.map((_, index) => (
+              {imgs.map((_, index) => (
                 <span
                   key={index}
                   className={`h-1.5 rounded-full transition-all ${
@@ -69,7 +67,7 @@ const Carousel = ({
 
       {isFullscreen && (
         <FullScreenCarouselModal
-          images={images}
+          images={imgs}
           currentIndex={currentIndex}
           setCurrentIndex={setCurrentIndex}
           onClose={() => setIsFullscreen(false)}

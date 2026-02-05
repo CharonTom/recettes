@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import type { Recipe } from "./Home";
+import type { Recipe } from "../types/types";
 import { FaArrowLeft } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import Carousel from "../components/Carousel";

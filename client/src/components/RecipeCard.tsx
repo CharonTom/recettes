@@ -1,17 +1,12 @@
-import { FaTrash, FaPen, FaRegEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import type { Recipe } from "../pages/Home";
+import type { RecipeCardProps } from "../types/types";
 import DefaultImage from "../assets/default.jpg";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { FiTrash2 } from "react-icons/fi";
-
-interface RecipeCardProps {
-  recipe: Recipe;
-  handleDeleteRecipe: (id: string) => void;
-}
 
 const RecipeCard = ({ recipe, handleDeleteRecipe }: RecipeCardProps) => {
   const { token } = useAuth();

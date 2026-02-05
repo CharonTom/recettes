@@ -1,10 +1,4 @@
-interface ConfirmDeleteModalProps {
-  open: boolean;
-  title: string;
-  message: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
+import type { ConfirmDeleteModalProps } from "../types/types";
 
 const ConfirmDeleteModal = ({
   open,

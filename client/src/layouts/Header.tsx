@@ -2,14 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { jwtDecode } from "jwt-decode";
-import { FaSignOutAlt, FaPlus } from "react-icons/fa";
+import { FaSignOutAlt } from "react-icons/fa";
 import Banner from "../assets/banner.jpg";
-
-interface JwtPayload {
-  email?: string;
-  id?: string;
-  name?: string;
-}
+import type { JwtPayload } from "../types/types";
 
 const Header: React.FC = () => {
   const { token, setToken } = useAuth();

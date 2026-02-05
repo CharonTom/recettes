@@ -1,12 +1,5 @@
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
-interface FullscreenCarouselModalProps {
-  images: string[];
-  currentIndex: number;
-  setCurrentIndex: (index: number) => void;
-  onClose: () => void;
-  alt?: string;
-}
+import type { FullscreenCarouselModalProps } from "../types/types";
 
 const FullscreenCarouselModal = ({
   images,

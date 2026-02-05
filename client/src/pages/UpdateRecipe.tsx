@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import type { Recipe } from "./Home";
+import type { Recipe } from "../types/types";
 
 const UpdateRecipe = () => {
   const navigate = useNavigate();

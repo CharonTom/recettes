@@ -4,19 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
-
-export interface Recipe {
-  _id: string;
-  title: string;
-  description: string;
-  imageUrls?: string[];
-  createdAt: string;
-  updatedAt: string;
-  author?: {
-    _id: string;
-    name: string;
-  };
-}
+import type { Recipe } from "../types/types";
 
 const Home = () => {
   const navigate = useNavigate();

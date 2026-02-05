@@ -2,11 +2,7 @@ import { useState } from "react";
 import DefaultImage from "../assets/default.jpg";
 import FullScreenCarouselModal from "../components/FullScreenCarouselModal";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
-interface CarouselProps {
-  images?: string[];
-  alt?: string;
-}
+import type { CarouselProps } from "../types/types";
 
 const Carousel = ({ images, alt = "Image" }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
